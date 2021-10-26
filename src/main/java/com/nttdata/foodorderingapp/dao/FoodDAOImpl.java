@@ -74,7 +74,7 @@ public class FoodDAOImpl implements FoodDAO {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Menu");
 			
 			while(rs.next()) {
-				result.add(new Dish(rs.getString("DishName"), rs.getInt("QtyAvailable"), rs.getString("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
+				result.add(new Dish(rs.getInt("DishId"), rs.getString("DishName"), rs.getInt("QtyAvailable"), rs.getString("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
 		} catch (SQLException e) {
 			System.out.println("Error logging in: " + e.getMessage());

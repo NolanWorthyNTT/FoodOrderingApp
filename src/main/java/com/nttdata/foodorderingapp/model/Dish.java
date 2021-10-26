@@ -1,14 +1,16 @@
 package com.nttdata.foodorderingapp.model;
 
 public class Dish {
+	private int dishId;
 	private String dishName;
 	private int qtyAvailable;
 	private String pricePer;
 	private String imageUrl;
 	private String ingredients;
 	
-	public Dish(String dishName, int qtyAvailable, String pricePer, String imageUrl, String ingredients) {
+	public Dish(int dishId, String dishName, int qtyAvailable, String pricePer, String imageUrl, String ingredients) {
 		super();
+		this.dishId = dishId;
 		this.dishName = dishName;
 		this.qtyAvailable = qtyAvailable;
 		this.pricePer = pricePer;
@@ -16,6 +18,14 @@ public class Dish {
 		this.ingredients = ingredients;
 	}
 
+	public int getDishId() {
+		return dishId;
+	}
+	
+	public void setDishId(int dishId) {
+		this.dishId = dishId;
+	}
+	
 	public String getDishName() {
 		return dishName;
 	}

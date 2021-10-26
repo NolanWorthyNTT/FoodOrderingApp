@@ -25,7 +25,7 @@ public class FoodOrderingController {
 		String response = foodDAO.login(json.get("username"), json.get("password"));
 		return Collections.singletonMap("response", response);
 	}
-	
+
 	@GetMapping("/menu")
 	public List<Dish> getAllDishesOnMenu() {
 		return foodDAO.getAllDishesOnMenu();
