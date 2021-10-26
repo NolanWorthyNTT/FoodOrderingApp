@@ -41,10 +41,10 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 	
 	
-	// returns "user" if user role, "admin" if admin role, "failed" if login not completed, "no user" if user doesn't exist
+	// returns "user" if user role, "admin" if admin role, "no user" if user doesn't exist
 	@Override
 	public String login(String user, String pass) {
-		String result = "failed";
+		String result = "no user";
 		try (Connection conn = getConnection();
 				PreparedStatement pStmt = conn.prepareStatement("SELECT IsAdmin FROM Users WHERE Username = ? AND Pass = ?")) {
 			pStmt.setString(1, user);
@@ -58,8 +58,6 @@ public class FoodDAOImpl implements FoodDAO {
 				} else {
 					result = "user";
 				}
-			} else {
-				result = "no user";
 			}
 		} catch (SQLException e) {
 			System.out.println("Error logging in: " + e.getMessage());
