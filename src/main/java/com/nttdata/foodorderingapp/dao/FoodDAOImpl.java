@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +51,6 @@ public class FoodDAOImpl implements FoodDAO {
 			pStmt.setString(2, pass);
 			
 			ResultSet rs = pStmt.executeQuery();
-			System.out.println(user + pass);
 			
 			if(rs.next()) {
 				if(rs.getBoolean("IsAdmin")) {
@@ -67,9 +68,20 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public List<Dish> getAllDishes() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Dish> getAllDishesOnMenu() {
+		List<Dish> result = new ArrayList<Dish>();
+		try (Connection conn = getConnection();
+				Statement stmt = conn.createStatement()) {
+
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Menu");
+			
+			while(rs.next()) {
+				result.add(new Dish(rs.getString("DishName"), rs.getInt("QtyAvailable"), rs.getString("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
+			}
+		} catch (SQLException e) {
+			System.out.println("Error logging in: " + e.getMessage());
+		}
+		return result;
 	}
 
 	@Override
