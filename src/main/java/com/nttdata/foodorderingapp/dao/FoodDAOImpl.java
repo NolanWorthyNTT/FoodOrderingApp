@@ -9,26 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import com.nttdata.foodorderingapp.model.Dish;
 import com.nttdata.foodorderingapp.model.Order;
 
 public class FoodDAOImpl implements FoodDAO {
-	//@Value("${spring.datasource.url}")
 	private String dbUrl = "jdbc:mysql://localhost:3306/food_ordering_db";
-	
-	//@Value("${spring.datasource.username}")
 	private String dbUser = "root";
-	
-	//@Value("${spring.datasource.password}")
 	private String dbPass = "L7b#!x%3^KHUZJVG";
-
-	//@Autowired
-	//JdbcTemplate jdbcTemplate;
 	
 	public Connection getConnection() {
 		Connection connection = null;
