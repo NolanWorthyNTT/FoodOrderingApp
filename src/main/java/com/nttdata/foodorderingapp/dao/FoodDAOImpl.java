@@ -61,7 +61,7 @@ public class FoodDAOImpl implements FoodDAO {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Menu");
 			
 			while(rs.next()) {
-				result.add(new Dish(rs.getInt("DishId"), rs.getString("DishName"), rs.getInt("QtyAvailable"), rs.getString("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
+				result.add(new Dish(rs.getInt("DishId"), rs.getString("DishName"), rs.getInt("QtyAvailable"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
 		} catch (SQLException e) {
 			System.out.println("Error logging in: " + e.getMessage());
@@ -70,21 +70,56 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public void addDishToMenu(Dish dish) {
-		// TODO Auto-generated method stub
-		
+	public int addDishToMenu(Dish dish) {
+		int result = -1;
+		try (Connection conn = getConnection();
+				PreparedStatement pStmt = conn.prepareStatement("INSERT INTO Menu VALUES (?, ?, ?, ?, ?, ?)")) {
+			pStmt.setInt(1, dish.getDishId());
+			pStmt.setString(2, dish.getDishName());
+			pStmt.setInt(3, dish.getQtyAvailable());
+			pStmt.setFloat(4, dish.getPricePer());
+			pStmt.setString(5, dish.getImageUrl());
+			pStmt.setString(6, dish.getIngredients());
+			
+			result = pStmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Error logging in: " + e.getMessage());
+		}
+		return result;
 	}
 
 	@Override
-	public void addDishToDishes(Dish dish) {
-		// TODO Auto-generated method stub
-		
+	public int[] addDishToDishes(Dish dish) {
+		int result = -1;
+		int generatedKeys = -1;
+		try (Connection conn = getConnection();
+				PreparedStatement pStmt = conn.prepareStatement("INSERT INTO Dishes VALUES (NULL, ?, ?, ?, ?)")) {
+			pStmt.setString(1, dish.getDishName());
+			pStmt.setFloat(2, dish.getPricePer());
+			pStmt.setString(3, dish.getImageUrl());
+			pStmt.setString(4, dish.getIngredients());
+			
+			result = pStmt.executeUpdate();
+			ResultSet rs = pStmt.getGeneratedKeys();
+			
+			if(rs.next()) {
+				generatedKeys = (int)rs.getLong(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("Error logging in: " + e.getMessage());
+		}
+		return new int[] {result, generatedKeys};
 	}
 
 	@Override
 	public void deleteDishFromMenu(Dish dish) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void purchaseDish(Dish dish) {
+		// decrement quantity
 	}
 
 	@Override
