@@ -30,4 +30,14 @@ public class FoodOrderingController {
 	public List<Dish> getAllDishesOnMenu() {
 		return foodDAO.getAllDishesOnMenu();
 	}
+	
+	@PostMapping("/uploadMenu")
+	public void uploadMenu(List<Dish> dishList) {
+		int[] addToDishesResult;
+		for(Dish dish : dishList) {
+			addToDishesResult = foodDAO.addDishToDishes(dish);
+			dish.setDishId(addToDishesResult[1]);
+			foodDAO.addDishToMenu(dish);
+		}
+	}
 }
