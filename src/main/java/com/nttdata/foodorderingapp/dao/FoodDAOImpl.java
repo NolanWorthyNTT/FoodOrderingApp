@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.nttdata.foodorderingapp.model.Dish;
 import com.nttdata.foodorderingapp.model.Order;
+import com.nttdata.foodorderingapp.model.User;
 
 public class FoodDAOImpl implements FoodDAO {
 	private String dbUrl = "jdbc:mysql://localhost:3306/food_ordering_db";
@@ -28,23 +29,19 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 	
 	
-	// returns "user" if user role, "admin" if admin role, "no user" if user doesn't exist
+	// userId member of return object is -1 if no match
 	@Override
-	public String login(String user, String pass) {
-		String result = "no user";
+	public User login(String user, String pass) {
+		User result = new User(-1, "", "", false);
 		try (Connection conn = getConnection();
-				PreparedStatement pStmt = conn.prepareStatement("SELECT IsAdmin FROM Users WHERE Username = ? AND Pass = ?")) {
+				PreparedStatement pStmt = conn.prepareStatement("SELECT * FROM Users WHERE Username = ? AND Pass = ?")) {
 			pStmt.setString(1, user);
 			pStmt.setString(2, pass);
 			
 			ResultSet rs = pStmt.executeQuery();
 			
 			if(rs.next()) {
-				if(rs.getBoolean("IsAdmin")) {
-					result = "admin";
-				} else {
-					result = "user";
-				}
+				result = new User(rs.getInt("UserId"), rs.getString("Username"), rs.getString("Pass"), rs.getBoolean("IsAdmin"));
 			}
 		} catch (SQLException e) {
 			System.out.println("Error logging in: " + e.getMessage());
