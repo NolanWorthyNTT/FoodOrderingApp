@@ -8,9 +8,10 @@ import com.nttdata.foodorderingapp.model.Order;
 public interface FoodDAO {
 	public String login(String user, String pass);
 	public List<Dish> getAllDishesOnMenu();
-	public void addDishToMenu(Dish dish);
-	public void addDishToDishes(Dish dish);
+	public int addDishToMenu(Dish dish);
+	public int[] addDishToDishes(Dish dish);
 	public void deleteDishFromMenu(Dish dish);
+	public void purchaseDish(Dish dish);
 	public int addOrderToOrders(Order order);
 	public void addDishesToOrderDetails(List<Order> orders);
 	public List<Order> getOrdersWithUser(int userId);
