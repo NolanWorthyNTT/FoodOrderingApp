@@ -4,11 +4,11 @@ public class Dish {
 	private int dishId;
 	private String dishName;
 	private int qtyAvailable;
-	private String pricePer;
+	private float pricePer;
 	private String imageUrl;
 	private String ingredients;
 	
-	public Dish(int dishId, String dishName, int qtyAvailable, String pricePer, String imageUrl, String ingredients) {
+	public Dish(int dishId, String dishName, int qtyAvailable, float pricePer, String imageUrl, String ingredients) {
 		super();
 		this.dishId = dishId;
 		this.dishName = dishName;
@@ -42,11 +42,11 @@ public class Dish {
 		this.qtyAvailable = qtyAvailable;
 	}
 
-	public String getPricePer() {
+	public float getPricePer() {
 		return pricePer;
 	}
 
-	public void setPricePer(String pricePer) {
+	public void setPricePer(float pricePer) {
 		this.pricePer = pricePer;
 	}
 
