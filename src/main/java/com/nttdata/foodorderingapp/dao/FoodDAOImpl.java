@@ -114,11 +114,6 @@ public class FoodDAOImpl implements FoodDAO {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-	public void purchaseDish(Dish dish) {
-		// decrement quantity
-	}
 
 	@Override
 	public int[] addOrderToOrders(Order order) {
