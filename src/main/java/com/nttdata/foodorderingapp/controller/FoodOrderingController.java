@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.foodorderingapp.dao.FoodDAO;
 import com.nttdata.foodorderingapp.dao.FoodDAOImpl;
 import com.nttdata.foodorderingapp.model.Dish;
-import com.nttdata.foodorderingapp.model.Order;
 import com.nttdata.foodorderingapp.model.OrderAndDishes;
+import com.nttdata.foodorderingapp.model.OrderFromTable;
 import com.nttdata.foodorderingapp.model.User;
 
 @CrossOrigin
@@ -48,10 +49,15 @@ public class FoodOrderingController {
 		int[] addDishToOrderDetailsResult;
 		int reduceQtyOfDishAvailableResult;
 		
-		addOrderToOrdersResult = foodDAO.addOrderToOrders(oad.getOrder());
+		addOrderToOrdersResult = foodDAO.addOrderToOrders(oad.getOrderToInsert());
 		for(Dish dish : oad.getDishesInOrder()) {
 			addDishToOrderDetailsResult = foodDAO.addDishToOrderDetails(dish, addOrderToOrdersResult[1]);
 			reduceQtyOfDishAvailableResult = foodDAO.reduceQtyOfDishAvailable(dish);
 		}
+	}
+	
+	@GetMapping("/orders")
+	public List<OrderFromTable> getOrders(@RequestParam int id) {
+		return foodDAO.getOrdersWithUser(id);
 	}
 }
