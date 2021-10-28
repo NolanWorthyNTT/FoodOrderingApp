@@ -3,20 +3,20 @@ package com.nttdata.foodorderingapp.model;
 import java.util.List;
 
 public class OrderAndDishes {
-	private Order order;
+	private OrderToInsert order;
 	private List<Dish> dishesInOrder;
 	
-	public OrderAndDishes(Order order, List<Dish> dishesInOrder) {
+	public OrderAndDishes(OrderToInsert order, List<Dish> dishesInOrder) {
 		super();
 		this.order = order;
 		this.dishesInOrder = dishesInOrder;
 	}
 	
-	public Order getOrder() {
+	public OrderToInsert getOrderToInsert() {
 		return order;
 	}
 	
-	public void setOrder(Order order) {
+	public void setOrderToInsert(OrderToInsert order) {
 		this.order = order;
 	}
 	
