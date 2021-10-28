@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nttdata.foodorderingapp.model.Dish;
-import com.nttdata.foodorderingapp.model.Order;
+import com.nttdata.foodorderingapp.model.OrderFromTable;
+import com.nttdata.foodorderingapp.model.OrderToInsert;
 import com.nttdata.foodorderingapp.model.User;
 
 public class FoodDAOImpl implements FoodDAO {
@@ -116,7 +117,7 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public int[] addOrderToOrders(Order order) {
+	public int[] addOrderToOrders(OrderToInsert order) {
 		int result = -1;
 		int generatedKeys = -1;
 		try (Connection conn = getConnection();
@@ -175,13 +176,24 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public List<Order> getOrdersWithUser(int userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<OrderFromTable> getOrdersWithUser(int userId) {
+		List<OrderFromTable> result = new ArrayList<OrderFromTable>();
+		try (Connection conn = getConnection();
+				Statement stmt = conn.createStatement()) {
+
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Orders WHERE UserId = " + userId + " ORDER BY OrderId DESC");
+			
+			while(rs.next()) {
+				result.add(new OrderFromTable(rs.getInt("OrderId"), rs.getDate("DateOfOrder").toLocalDate(), rs.getFloat("Total"), rs.getInt("UserId")));
+			}
+		} catch (SQLException e) {
+			System.out.println("Error logging in: " + e.getMessage());
+		}
+		return result;
 	}
 
 	@Override
-	public List<Order> searchOrders(int userId, String partialOrderId) {
+	public List<OrderToInsert> searchOrders(int userId, String partialOrderId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
