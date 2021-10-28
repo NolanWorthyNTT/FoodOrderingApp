@@ -146,7 +146,6 @@ public class FoodDAOImpl implements FoodDAO {
 			pStmt.setInt(1, orderId);
 			pStmt.setInt(2, dish.getDishId());
 			pStmt.setInt(3, dish.getQty());
-			System.out.println(dish.getQty());
 			
 			result = pStmt.executeUpdate();
 			ResultSet rs = pStmt.getGeneratedKeys();
@@ -158,6 +157,21 @@ public class FoodDAOImpl implements FoodDAO {
 			System.out.println("Error logging in: " + e.getMessage());
 		}
 		return new int[] {result, generatedKeys};
+	}
+	
+	@Override
+	public int reduceQtyOfDishAvailable(Dish dish) {
+		int result = -1;
+		try (Connection conn = getConnection();
+				PreparedStatement pStmt = conn.prepareStatement("UPDATE Menu SET QtyAvailable = QtyAvailable - ? WHERE DishId = ?", Statement.RETURN_GENERATED_KEYS)) {
+			pStmt.setInt(1, dish.getQty());
+			pStmt.setInt(2, dish.getDishId());
+			
+			result = pStmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Error logging in: " + e.getMessage());
+		}
+		return result;
 	}
 
 	@Override
