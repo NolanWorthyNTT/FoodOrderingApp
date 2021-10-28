@@ -13,8 +13,8 @@ public interface FoodDAO {
 	public int[] addDishToDishes(Dish dish);
 	public void deleteDishFromMenu(Dish dish);
 	public void purchaseDish(Dish dish);
-	public int addOrderToOrders(Order order);
-	public void addDishesToOrderDetails(List<Order> orders);
+	public int[] addOrderToOrders(Order order);
+	public int[] addDishToOrderDetails(Dish dish, int orderId);
 	public List<Order> getOrdersWithUser(int userId);
 	public List<Order> searchOrders(int userId, String partialOrderId);
 }
