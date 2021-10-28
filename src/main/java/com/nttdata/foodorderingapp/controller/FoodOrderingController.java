@@ -46,10 +46,12 @@ public class FoodOrderingController {
 	public void placeOrder(@RequestBody OrderAndDishes oad) {
 		int[] addOrderToOrdersResult;
 		int[] addDishToOrderDetailsResult;
+		int reduceQtyOfDishAvailableResult;
 		
 		addOrderToOrdersResult = foodDAO.addOrderToOrders(oad.getOrder());
 		for(Dish dish : oad.getDishesInOrder()) {
 			addDishToOrderDetailsResult = foodDAO.addDishToOrderDetails(dish, addOrderToOrdersResult[1]);
+			reduceQtyOfDishAvailableResult = foodDAO.reduceQtyOfDishAvailable(dish);
 		}
 	}
 }
