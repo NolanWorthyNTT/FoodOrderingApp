@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nttdata.foodorderingapp.dao.FoodDAO;
 import com.nttdata.foodorderingapp.dao.FoodDAOImpl;
 import com.nttdata.foodorderingapp.model.Dish;
+import com.nttdata.foodorderingapp.model.Order;
+import com.nttdata.foodorderingapp.model.OrderAndDishes;
 import com.nttdata.foodorderingapp.model.User;
 
 @CrossOrigin
@@ -31,12 +33,23 @@ public class FoodOrderingController {
 	}
 	
 	@PostMapping("/uploadMenu")
-	public void uploadMenu(List<Dish> dishList) {
+	public void uploadMenu(@RequestBody List<Dish> dishList) {
 		int[] addToDishesResult;
 		for(Dish dish : dishList) {
 			addToDishesResult = foodDAO.addDishToDishes(dish);
 			dish.setDishId(addToDishesResult[1]);
 			foodDAO.addDishToMenu(dish);
+		}
+	}
+	
+	@PostMapping("/placeOrder")
+	public void placeOrder(@RequestBody OrderAndDishes oad) {
+		int[] addOrderToOrdersResult;
+		int[] addDishToOrderDetailsResult;
+		
+		addOrderToOrdersResult = foodDAO.addOrderToOrders(oad.getOrder());
+		for(Dish dish : oad.getDishesInOrder()) {
+			addDishToOrderDetailsResult = foodDAO.addDishToOrderDetails(dish, addOrderToOrdersResult[1]);
 		}
 	}
 }
