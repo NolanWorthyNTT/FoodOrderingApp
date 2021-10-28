@@ -14,6 +14,7 @@ public interface FoodDAO {
 	public void deleteDishFromMenu(Dish dish);
 	public int[] addOrderToOrders(Order order);
 	public int[] addDishToOrderDetails(Dish dish, int orderId);
+	public int reduceQtyOfDishAvailable(Dish dish);
 	public List<Order> getOrdersWithUser(int userId);
 	public List<Order> searchOrders(int userId, String partialOrderId);
 }
