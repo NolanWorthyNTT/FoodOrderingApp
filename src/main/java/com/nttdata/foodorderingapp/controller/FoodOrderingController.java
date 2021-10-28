@@ -1,5 +1,6 @@
 package com.nttdata.foodorderingapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nttdata.foodorderingapp.dao.FoodDAO;
 import com.nttdata.foodorderingapp.dao.FoodDAOImpl;
 import com.nttdata.foodorderingapp.model.Dish;
+import com.nttdata.foodorderingapp.model.DishDetails;
 import com.nttdata.foodorderingapp.model.OrderAndDishes;
+import com.nttdata.foodorderingapp.model.OrderAndDishesFromTable;
 import com.nttdata.foodorderingapp.model.OrderFromTable;
 import com.nttdata.foodorderingapp.model.User;
 
@@ -57,7 +60,14 @@ public class FoodOrderingController {
 	}
 	
 	@GetMapping("/orders")
-	public List<OrderFromTable> getOrders(@RequestParam int id) {
-		return foodDAO.getOrdersWithUser(id);
+	public List<OrderAndDishesFromTable> getOrders(@RequestParam int id) {
+		List<OrderAndDishesFromTable> result = new ArrayList<OrderAndDishesFromTable>();
+		List<OrderFromTable> orders = foodDAO.getOrdersWithUser(id);
+		
+		for(OrderFromTable order : orders) {
+			List<DishDetails> dishes = foodDAO.getDetailsWithOrder(order.getOrderId());
+			result.add(new OrderAndDishesFromTable(order, dishes));
+		}
+		return result;
 	}
 }
