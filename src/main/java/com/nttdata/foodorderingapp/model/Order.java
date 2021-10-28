@@ -7,9 +7,9 @@ public class Order {
 	private float total;
 	private int userId;
 	
-	public Order(LocalDate dateOfOrder, float total, int userId) {
+	public Order(float total, int userId) {
 		super();
-		this.dateOfOrder = dateOfOrder;
+		this.dateOfOrder = LocalDate.now();
 		this.total = total;
 		this.userId = userId;
 	}
