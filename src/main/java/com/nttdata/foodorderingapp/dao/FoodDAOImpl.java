@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nttdata.foodorderingapp.model.Dish;
+import com.nttdata.foodorderingapp.model.DishDetails;
 import com.nttdata.foodorderingapp.model.OrderFromTable;
 import com.nttdata.foodorderingapp.model.OrderToInsert;
 import com.nttdata.foodorderingapp.model.User;
@@ -185,6 +186,23 @@ public class FoodDAOImpl implements FoodDAO {
 			
 			while(rs.next()) {
 				result.add(new OrderFromTable(rs.getInt("OrderId"), rs.getDate("DateOfOrder").toLocalDate(), rs.getFloat("Total"), rs.getInt("UserId")));
+			}
+		} catch (SQLException e) {
+			System.out.println("Error logging in: " + e.getMessage());
+		}
+		return result;
+	}
+	
+	@Override
+	public List<DishDetails> getDetailsWithOrder(int orderId) {
+		List<DishDetails> result = new ArrayList<DishDetails>();
+		try (Connection conn = getConnection();
+				Statement stmt = conn.createStatement()) {
+
+			ResultSet rs = stmt.executeQuery("SELECT * FROM OrderDetails JOIN Dishes ON OrderDetails.DishId = Dishes.DishId WHERE OrderId = " + orderId);
+			
+			while(rs.next()) {
+				result.add(new DishDetails(rs.getInt("DishId"), rs.getString("DishName"), rs.getInt("Qty"), rs.getInt("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
 		} catch (SQLException e) {
 			System.out.println("Error logging in: " + e.getMessage());
