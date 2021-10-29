@@ -93,7 +93,7 @@ public class FoodDAOImpl implements FoodDAO {
 		int result = -1;
 		int generatedKeys = -1;
 		try (Connection conn = getConnection();
-				PreparedStatement pStmt = conn.prepareStatement("INSERT INTO Dishes VALUES (NULL, ?, ?, ?, ?)")) {
+				PreparedStatement pStmt = conn.prepareStatement("INSERT INTO Dishes VALUES (NULL, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
 			pStmt.setString(1, dish.getDishName());
 			pStmt.setFloat(2, dish.getPricePer());
 			pStmt.setString(3, dish.getImageUrl());
