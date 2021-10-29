@@ -112,9 +112,16 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public void deleteDishFromMenu(Dish dish) {
-		// TODO Auto-generated method stub
-		
+	public int clearMenu() {
+		int result = -1;
+		try (Connection conn = getConnection();
+				Statement stmt = conn.createStatement()) {
+
+			result = stmt.executeUpdate("DELETE FROM Menu");
+		} catch (SQLException e) {
+			System.out.println("Error logging in: " + e.getMessage());
+		}
+		return result;
 	}
 
 	@Override
@@ -209,11 +216,4 @@ public class FoodDAOImpl implements FoodDAO {
 		}
 		return result;
 	}
-
-	@Override
-	public List<OrderToInsert> searchOrders(int userId, String partialOrderId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
