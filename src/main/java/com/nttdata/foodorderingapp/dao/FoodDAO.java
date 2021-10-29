@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.nttdata.foodorderingapp.model.Dish;
 import com.nttdata.foodorderingapp.model.DishDetails;
+import com.nttdata.foodorderingapp.model.DishFromDishes;
 import com.nttdata.foodorderingapp.model.OrderFromTable;
 import com.nttdata.foodorderingapp.model.OrderToInsert;
 import com.nttdata.foodorderingapp.model.User;
@@ -11,6 +12,7 @@ import com.nttdata.foodorderingapp.model.User;
 public interface FoodDAO {
 	public User login(String user, String pass);
 	public List<Dish> getAllDishesOnMenu();
+	public List<DishFromDishes> getAllDishes();
 	public int addDishToMenu(Dish dish);
 	public int[] addDishToDishes(Dish dish);
 	public int clearMenu();
