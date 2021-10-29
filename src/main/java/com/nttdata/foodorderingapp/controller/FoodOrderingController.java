@@ -38,10 +38,16 @@ public class FoodOrderingController {
 	
 	@PostMapping("/uploadMenu")
 	public void uploadMenu(@RequestBody List<Dish> dishList) {
+		
 		int[] addToDishesResult;
+		foodDAO.clearMenu();
+		
 		for(Dish dish : dishList) {
-			addToDishesResult = foodDAO.addDishToDishes(dish);
-			dish.setDishId(addToDishesResult[1]);
+			if(dish.getDishId() == -1) {
+				addToDishesResult = foodDAO.addDishToDishes(dish);
+				dish.setDishId(addToDishesResult[1]);
+			}
+			
 			foodDAO.addDishToMenu(dish);
 		}
 	}
