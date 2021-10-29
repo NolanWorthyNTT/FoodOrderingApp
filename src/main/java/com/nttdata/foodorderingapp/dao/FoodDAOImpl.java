@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.nttdata.foodorderingapp.model.Dish;
 import com.nttdata.foodorderingapp.model.DishDetails;
+import com.nttdata.foodorderingapp.model.DishFromDishes;
 import com.nttdata.foodorderingapp.model.OrderFromTable;
 import com.nttdata.foodorderingapp.model.OrderToInsert;
 import com.nttdata.foodorderingapp.model.User;
@@ -62,6 +63,23 @@ public class FoodDAOImpl implements FoodDAO {
 			
 			while(rs.next()) {
 				result.add(new Dish(rs.getInt("DishId"), rs.getString("DishName"), rs.getInt("QtyAvailable"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
+			}
+		} catch (SQLException e) {
+			System.out.println("Error logging in: " + e.getMessage());
+		}
+		return result;
+	}
+	
+	@Override
+	public List<DishFromDishes> getAllDishes() {
+		List<DishFromDishes> result = new ArrayList<DishFromDishes>();
+		try (Connection conn = getConnection();
+				Statement stmt = conn.createStatement()) {
+
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Dishes");
+			
+			while(rs.next()) {
+				result.add(new DishFromDishes(rs.getInt("DishId"), rs.getString("DishName"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
 		} catch (SQLException e) {
 			System.out.println("Error logging in: " + e.getMessage());
