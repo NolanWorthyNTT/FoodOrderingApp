@@ -27,7 +27,7 @@ public class FoodDAOImpl implements FoodDAO {
 		try {
 			connection = DriverManager.getConnection(dbUrl, dbUser, dbPass);
 		} catch (SQLException e) {
-			System.out.println("Couldn't connect to DB: " + e.getMessage());
+			System.out.println("Error getting connection: " + e.getMessage());
 		}
 		return connection;
 	}
@@ -65,7 +65,7 @@ public class FoodDAOImpl implements FoodDAO {
 				result.add(new Dish(rs.getInt("DishId"), rs.getString("DishName"), rs.getInt("QtyAvailable"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
 		} catch (SQLException e) {
-			System.out.println("Error logging in: " + e.getMessage());
+			System.out.println("Error getting menu: " + e.getMessage());
 		}
 		return result;
 	}
@@ -82,7 +82,7 @@ public class FoodDAOImpl implements FoodDAO {
 				result.add(new DishFromDishes(rs.getInt("DishId"), rs.getString("DishName"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
 		} catch (SQLException e) {
-			System.out.println("Error logging in: " + e.getMessage());
+			System.out.println("Error getting dishes: " + e.getMessage());
 		}
 		return result;
 	}
@@ -101,7 +101,7 @@ public class FoodDAOImpl implements FoodDAO {
 			
 			result = pStmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("Error logging in: " + e.getMessage());
+			System.out.println("Error creating dish in Menu: " + e.getMessage());
 		}
 		return result;
 	}
@@ -124,7 +124,7 @@ public class FoodDAOImpl implements FoodDAO {
 				generatedKeys = (int)rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error logging in: " + e.getMessage());
+			System.out.println("Error creating dish in Dishes: " + e.getMessage());
 		}
 		return new int[] {result, generatedKeys};
 	}
@@ -137,7 +137,7 @@ public class FoodDAOImpl implements FoodDAO {
 
 			result = stmt.executeUpdate("DELETE FROM Menu");
 		} catch (SQLException e) {
-			System.out.println("Error logging in: " + e.getMessage());
+			System.out.println("Error clearing menu: " + e.getMessage());
 		}
 		return result;
 	}
@@ -159,7 +159,7 @@ public class FoodDAOImpl implements FoodDAO {
 				generatedKeys = (int)rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error logging in: " + e.getMessage());
+			System.out.println("Error creating order in Orders: " + e.getMessage());
 		}
 		return new int[] {result, generatedKeys};
 	}
@@ -181,7 +181,7 @@ public class FoodDAOImpl implements FoodDAO {
 				generatedKeys = (int)rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error logging in: " + e.getMessage());
+			System.out.println("Error creating dish in OrderDetails: " + e.getMessage());
 		}
 		return new int[] {result, generatedKeys};
 	}
@@ -196,7 +196,7 @@ public class FoodDAOImpl implements FoodDAO {
 			
 			result = pStmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("Error logging in: " + e.getMessage());
+			System.out.println("Error updating dish quantity in Menu: " + e.getMessage());
 		}
 		return result;
 	}
@@ -213,7 +213,7 @@ public class FoodDAOImpl implements FoodDAO {
 				result.add(new OrderFromTable(rs.getInt("OrderId"), rs.getDate("DateOfOrder").toLocalDate(), rs.getFloat("Total"), rs.getInt("UserId")));
 			}
 		} catch (SQLException e) {
-			System.out.println("Error logging in: " + e.getMessage());
+			System.out.println("Error getting orders by user: " + e.getMessage());
 		}
 		return result;
 	}
@@ -230,7 +230,7 @@ public class FoodDAOImpl implements FoodDAO {
 				result.add(new DishDetails(rs.getInt("DishId"), rs.getString("DishName"), rs.getInt("Qty"), rs.getInt("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
 		} catch (SQLException e) {
-			System.out.println("Error logging in: " + e.getMessage());
+			System.out.println("Error getting order details by order: " + e.getMessage());
 		}
 		return result;
 	}
