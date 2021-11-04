@@ -47,6 +47,8 @@ public class FoodDAOImpl implements FoodDAO {
 			if(rs.next()) {
 				result = new User(rs.getInt("UserId"), rs.getString("Username"), rs.getString("Pass"), rs.getBoolean("IsAdmin"));
 			}
+			
+			System.out.println("SELECT * FROM Users WHERE Username = " + user + " AND Pass = " + pass);
 		} catch (SQLException e) {
 			System.out.println("Error logging in: " + e.getMessage());
 		}
@@ -64,6 +66,8 @@ public class FoodDAOImpl implements FoodDAO {
 			while(rs.next()) {
 				result.add(new Dish(rs.getInt("DishId"), rs.getString("DishName"), rs.getInt("QtyAvailable"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
+			
+			System.out.println("SELECT * FROM Menu");
 		} catch (SQLException e) {
 			System.out.println("Error getting menu: " + e.getMessage());
 		}
@@ -81,6 +85,8 @@ public class FoodDAOImpl implements FoodDAO {
 			while(rs.next()) {
 				result.add(new DishFromDishes(rs.getInt("DishId"), rs.getString("DishName"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
+			
+			System.out.println("SELECT * FROM Dishes");
 		} catch (SQLException e) {
 			System.out.println("Error getting dishes: " + e.getMessage());
 		}
@@ -100,6 +106,14 @@ public class FoodDAOImpl implements FoodDAO {
 			pStmt.setString(6, dish.getIngredients());
 			
 			result = pStmt.executeUpdate();
+			
+			System.out.println("INSERT INTO Menu VALUES ("
+									+ dish.getDishId() + ", "
+									+ dish.getDishName() + ", "
+									+ dish.getQty() + ", "
+									+ dish.getPricePer() + ", "
+									+ dish.getImageUrl() + ", "
+									+ dish.getIngredients() + ")");
 		} catch (SQLException e) {
 			System.out.println("Error creating dish in Menu: " + e.getMessage());
 		}
@@ -123,6 +137,12 @@ public class FoodDAOImpl implements FoodDAO {
 			if(rs.next()) {
 				generatedKeys = (int)rs.getLong(1);
 			}
+			
+			System.out.println("INSERT INTO Dishes VALUES ("
+					+ dish.getDishName() + ", "
+					+ dish.getPricePer() + ", "
+					+ dish.getImageUrl() + ", "
+					+ dish.getIngredients() + ")");
 		} catch (SQLException e) {
 			System.out.println("Error creating dish in Dishes: " + e.getMessage());
 		}
@@ -136,6 +156,8 @@ public class FoodDAOImpl implements FoodDAO {
 				Statement stmt = conn.createStatement()) {
 
 			result = stmt.executeUpdate("DELETE FROM Menu");
+			
+			System.out.println("DELETE FROM Menu");
 		} catch (SQLException e) {
 			System.out.println("Error clearing menu: " + e.getMessage());
 		}
@@ -158,6 +180,11 @@ public class FoodDAOImpl implements FoodDAO {
 			if(rs.next()) {
 				generatedKeys = (int)rs.getLong(1);
 			}
+			
+			System.out.println("INSERT INTO Orders (DateOfOrder, Total, UserId) VALUES ("
+									+ Date.valueOf(order.getDateOfOrder()) + ", "
+									+ order.getTotal() + ", "
+									+ order.getUserId() + ")");
 		} catch (SQLException e) {
 			System.out.println("Error creating order in Orders: " + e.getMessage());
 		}
@@ -180,6 +207,11 @@ public class FoodDAOImpl implements FoodDAO {
 			if(rs.next()) {
 				generatedKeys = (int)rs.getLong(1);
 			}
+			
+			System.out.println("INSERT INTO OrderDetails (OrderId, DishId, Qty) VALUES ("
+					+ orderId + ", "
+					+ dish.getDishId() + ", "
+					+ dish.getQty() + ")");
 		} catch (SQLException e) {
 			System.out.println("Error creating dish in OrderDetails: " + e.getMessage());
 		}
@@ -195,6 +227,8 @@ public class FoodDAOImpl implements FoodDAO {
 			pStmt.setInt(2, dish.getDishId());
 			
 			result = pStmt.executeUpdate();
+			
+			System.out.println("UPDATE Menu SET QtyAvailable = QtyAvailable - " + dish.getQty() + " WHERE DishId = " + dish.getDishId());
 		} catch (SQLException e) {
 			System.out.println("Error updating dish quantity in Menu: " + e.getMessage());
 		}
@@ -212,6 +246,8 @@ public class FoodDAOImpl implements FoodDAO {
 			while(rs.next()) {
 				result.add(new OrderFromTable(rs.getInt("OrderId"), rs.getDate("DateOfOrder").toLocalDate(), rs.getFloat("Total"), rs.getInt("UserId")));
 			}
+			
+			System.out.println("SELECT * FROM Orders WHERE UserId = " + userId + " ORDER BY OrderId DESC");
 		} catch (SQLException e) {
 			System.out.println("Error getting orders by user: " + e.getMessage());
 		}
