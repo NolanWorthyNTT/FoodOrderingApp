@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.foodorderingapp.dao.FoodDAO;
 import com.nttdata.foodorderingapp.dao.FoodDAOImpl;
+import com.nttdata.foodorderingapp.model.Dish;
 import com.nttdata.foodorderingapp.model.DishDetails;
-import com.nttdata.foodorderingapp.model.DishFromDishes;
 import com.nttdata.foodorderingapp.model.MenuItem;
 import com.nttdata.foodorderingapp.model.OrderAndDishes;
 import com.nttdata.foodorderingapp.model.OrderAndDishesFromTable;
@@ -82,7 +82,7 @@ public class FoodOrderingController {
 	}
 	
 	@GetMapping("/dishes")
-	public List<DishFromDishes> getAllDishes() {
+	public List<Dish> getAllDishes() {
 		return foodDAO.getAllDishes();
 	}
 }

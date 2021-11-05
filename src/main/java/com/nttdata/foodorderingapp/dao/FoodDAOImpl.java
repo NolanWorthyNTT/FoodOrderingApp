@@ -10,8 +10,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nttdata.foodorderingapp.model.Dish;
 import com.nttdata.foodorderingapp.model.DishDetails;
-import com.nttdata.foodorderingapp.model.DishFromDishes;
 import com.nttdata.foodorderingapp.model.MenuItem;
 import com.nttdata.foodorderingapp.model.OrderFromTable;
 import com.nttdata.foodorderingapp.model.OrderToInsert;
@@ -64,7 +64,7 @@ public class FoodDAOImpl implements FoodDAO {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Menu");
 			
 			while(rs.next()) {
-				result.add(new MenuItem(new DishFromDishes(rs.getInt("DishId"), rs.getString("DishName"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")), rs.getInt("QtyAvailable")));
+				result.add(new MenuItem(new Dish(rs.getInt("DishId"), rs.getString("DishName"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")), rs.getInt("QtyAvailable")));
 			}
 			
 			System.out.println("SELECT * FROM Menu");
@@ -75,15 +75,15 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 	
 	@Override
-	public List<DishFromDishes> getAllDishes() {
-		List<DishFromDishes> result = new ArrayList<DishFromDishes>();
+	public List<Dish> getAllDishes() {
+		List<Dish> result = new ArrayList<Dish>();
 		try (Connection conn = getConnection();
 				Statement stmt = conn.createStatement()) {
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Dishes");
 			
 			while(rs.next()) {
-				result.add(new DishFromDishes(rs.getInt("DishId"), rs.getString("DishName"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
+				result.add(new Dish(rs.getInt("DishId"), rs.getString("DishName"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
 			
 			System.out.println("SELECT * FROM Dishes");
@@ -121,7 +121,7 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public int[] addDishToDishes(DishFromDishes dish) {
+	public int[] addDishToDishes(Dish dish) {
 		int result = -1;
 		int generatedKeys = -1;
 		try (Connection conn = getConnection();
