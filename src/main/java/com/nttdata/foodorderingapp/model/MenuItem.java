@@ -1,22 +1,22 @@
 package com.nttdata.foodorderingapp.model;
 
-public class MenuDish {
+public class MenuItem {
 	DishFromDishes dish;
 	private int qty;
 	
-	public MenuDish(int dishId, String dishName, float pricePer, String imageUrl, String ingredients, int qty) {
+	public MenuItem(int dishId, String dishName, float pricePer, String imageUrl, String ingredients, int qty) {
 		super();
 		dish = new DishFromDishes(dishId, dishName, pricePer, imageUrl, ingredients);
 		this.qty = qty;
 	}
 	
-	public MenuDish(DishFromDishes dish, int qty) {
+	public MenuItem(DishFromDishes dish, int qty) {
 		super();
 		this.dish = dish;
 		this.qty = qty;
 	}
 	
-	public MenuDish () {};
+	public MenuItem () {};
 	
 	public DishFromDishes getDish() {
 		return dish;

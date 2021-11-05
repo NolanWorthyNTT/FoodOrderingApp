@@ -15,7 +15,7 @@ import com.nttdata.foodorderingapp.dao.FoodDAO;
 import com.nttdata.foodorderingapp.dao.FoodDAOImpl;
 import com.nttdata.foodorderingapp.model.DishDetails;
 import com.nttdata.foodorderingapp.model.DishFromDishes;
-import com.nttdata.foodorderingapp.model.MenuDish;
+import com.nttdata.foodorderingapp.model.MenuItem;
 import com.nttdata.foodorderingapp.model.OrderAndDishes;
 import com.nttdata.foodorderingapp.model.OrderAndDishesFromTable;
 import com.nttdata.foodorderingapp.model.OrderFromTable;
@@ -33,24 +33,24 @@ public class FoodOrderingController {
 	}
 
 	@GetMapping("/menu")
-	public List<MenuDish> getAllDishesOnMenu() {
+	public List<MenuItem> getAllDishesOnMenu() {
 		return foodDAO.getAllDishesOnMenu();
 	}
 	
 	@PostMapping("/uploadMenu")
-	public void uploadMenu(@RequestBody List<MenuDish> dishList) {
+	public void uploadMenu(@RequestBody List<MenuItem> dishList) {
 		
 		int[] addToDishesResult;
 		foodDAO.clearMenu();
 		
-		for(MenuDish dish : dishList) {
+		for(MenuItem menuItem : dishList) {
 			// dishId of -1 signifies a new dish - one not in Dishes table
-			if(dish.getDish().getDishId() == -1) {
-				addToDishesResult = foodDAO.addDishToDishes(dish.getDish());
-				dish.getDish().setDishId(addToDishesResult[1]);
+			if(menuItem.getDish().getDishId() == -1) {
+				addToDishesResult = foodDAO.addDishToDishes(menuItem.getDish());
+				menuItem.getDish().setDishId(addToDishesResult[1]);
 			}
 			
-			foodDAO.addDishToMenu(dish);
+			foodDAO.addDishToMenu(menuItem);
 		}
 	}
 	
@@ -61,9 +61,9 @@ public class FoodOrderingController {
 		int reduceQtyOfDishAvailableResult;
 		
 		addOrderToOrdersResult = foodDAO.addOrderToOrders(oad.getOrderToInsert());
-		for(MenuDish dish : oad.getDishesInOrder()) {
-			addDishToOrderDetailsResult = foodDAO.addDishToOrderDetails(dish, addOrderToOrdersResult[1]);
-			reduceQtyOfDishAvailableResult = foodDAO.reduceQtyOfDishAvailable(dish);
+		for(MenuItem menuItem : oad.getDishesInOrder()) {
+			addDishToOrderDetailsResult = foodDAO.addDishToOrderDetails(menuItem, addOrderToOrdersResult[1]);
+			reduceQtyOfDishAvailableResult = foodDAO.reduceQtyOfDishAvailable(menuItem);
 		}
 		
 		

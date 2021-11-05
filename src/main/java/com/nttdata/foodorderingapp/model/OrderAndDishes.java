@@ -4,9 +4,9 @@ import java.util.List;
 
 public class OrderAndDishes {
 	private OrderToInsert order;
-	private List<MenuDish> dishesInOrder;
+	private List<MenuItem> dishesInOrder;
 	
-	public OrderAndDishes(OrderToInsert order, List<MenuDish> dishesInOrder) {
+	public OrderAndDishes(OrderToInsert order, List<MenuItem> dishesInOrder) {
 		super();
 		this.order = order;
 		this.dishesInOrder = dishesInOrder;
@@ -20,11 +20,11 @@ public class OrderAndDishes {
 		this.order = order;
 	}
 	
-	public List<MenuDish> getDishesInOrder() {
+	public List<MenuItem> getDishesInOrder() {
 		return dishesInOrder;
 	}
 	
-	public void setDishesInOrder(List<MenuDish> dishesInOrder) {
+	public void setDishesInOrder(List<MenuItem> dishesInOrder) {
 		this.dishesInOrder = dishesInOrder;
 	}
 	

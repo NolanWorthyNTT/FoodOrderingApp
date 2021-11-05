@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.nttdata.foodorderingapp.model.DishDetails;
 import com.nttdata.foodorderingapp.model.DishFromDishes;
-import com.nttdata.foodorderingapp.model.MenuDish;
+import com.nttdata.foodorderingapp.model.MenuItem;
 import com.nttdata.foodorderingapp.model.OrderFromTable;
 import com.nttdata.foodorderingapp.model.OrderToInsert;
 import com.nttdata.foodorderingapp.model.User;
@@ -56,15 +56,15 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public List<MenuDish> getAllDishesOnMenu() {
-		List<MenuDish> result = new ArrayList<MenuDish>();
+	public List<MenuItem> getAllDishesOnMenu() {
+		List<MenuItem> result = new ArrayList<MenuItem>();
 		try (Connection conn = getConnection();
 				Statement stmt = conn.createStatement()) {
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Menu");
 			
 			while(rs.next()) {
-				result.add(new MenuDish(new DishFromDishes(rs.getInt("DishId"), rs.getString("DishName"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")), rs.getInt("QtyAvailable")));
+				result.add(new MenuItem(new DishFromDishes(rs.getInt("DishId"), rs.getString("DishName"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")), rs.getInt("QtyAvailable")));
 			}
 			
 			System.out.println("SELECT * FROM Menu");
@@ -94,26 +94,26 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public int addDishToMenu(MenuDish dish) {
+	public int addDishToMenu(MenuItem menuItem) {
 		int result = -1;
 		try (Connection conn = getConnection();
 				PreparedStatement pStmt = conn.prepareStatement("INSERT INTO Menu VALUES (?, ?, ?, ?, ?, ?)")) {
-			pStmt.setInt(1, dish.getDish().getDishId());
-			pStmt.setString(2, dish.getDish().getDishName());
-			pStmt.setInt(3, dish.getQty());
-			pStmt.setFloat(4, dish.getDish().getPricePer());
-			pStmt.setString(5, dish.getDish().getImageUrl());
-			pStmt.setString(6, dish.getDish().getIngredients());
+			pStmt.setInt(1, menuItem.getDish().getDishId());
+			pStmt.setString(2, menuItem.getDish().getDishName());
+			pStmt.setInt(3, menuItem.getQty());
+			pStmt.setFloat(4, menuItem.getDish().getPricePer());
+			pStmt.setString(5, menuItem.getDish().getImageUrl());
+			pStmt.setString(6, menuItem.getDish().getIngredients());
 			
 			result = pStmt.executeUpdate();
 			
 			System.out.println("INSERT INTO Menu VALUES ("
-									+ dish.getDish().getDishId() + ", "
-									+ dish.getDish().getDishName() + ", "
-									+ dish.getQty() + ", "
-									+ dish.getDish().getPricePer() + ", "
-									+ dish.getDish().getImageUrl() + ", "
-									+ dish.getDish().getIngredients() + ")");
+									+ menuItem.getDish().getDishId() + ", "
+									+ menuItem.getDish().getDishName() + ", "
+									+ menuItem.getQty() + ", "
+									+ menuItem.getDish().getPricePer() + ", "
+									+ menuItem.getDish().getImageUrl() + ", "
+									+ menuItem.getDish().getIngredients() + ")");
 		} catch (SQLException e) {
 			System.out.println("Error creating dish in Menu: " + e.getMessage());
 		}
@@ -192,14 +192,14 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public int[] addDishToOrderDetails(MenuDish dish, int orderId) {
+	public int[] addDishToOrderDetails(MenuItem menuItem, int orderId) {
 		int result = -1;
 		int generatedKeys = -1;
 		try (Connection conn = getConnection();
 				PreparedStatement pStmt = conn.prepareStatement("INSERT INTO OrderDetails (OrderId, DishId, Qty) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
 			pStmt.setInt(1, orderId);
-			pStmt.setInt(2, dish.getDish().getDishId());
-			pStmt.setInt(3, dish.getQty());
+			pStmt.setInt(2, menuItem.getDish().getDishId());
+			pStmt.setInt(3, menuItem.getQty());
 			
 			result = pStmt.executeUpdate();
 			ResultSet rs = pStmt.getGeneratedKeys();
@@ -210,8 +210,8 @@ public class FoodDAOImpl implements FoodDAO {
 			
 			System.out.println("INSERT INTO OrderDetails (OrderId, DishId, Qty) VALUES ("
 					+ orderId + ", "
-					+ dish.getDish().getDishId() + ", "
-					+ dish.getQty() + ")");
+					+ menuItem.getDish().getDishId() + ", "
+					+ menuItem.getQty() + ")");
 		} catch (SQLException e) {
 			System.out.println("Error creating dish in OrderDetails: " + e.getMessage());
 		}
@@ -219,16 +219,16 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 	
 	@Override
-	public int reduceQtyOfDishAvailable(MenuDish dish) {
+	public int reduceQtyOfDishAvailable(MenuItem menuItem) {
 		int result = -1;
 		try (Connection conn = getConnection();
 				PreparedStatement pStmt = conn.prepareStatement("UPDATE Menu SET QtyAvailable = QtyAvailable - ? WHERE DishId = ?", Statement.RETURN_GENERATED_KEYS)) {
-			pStmt.setInt(1, dish.getQty());
-			pStmt.setInt(2, dish.getDish().getDishId());
+			pStmt.setInt(1, menuItem.getQty());
+			pStmt.setInt(2, menuItem.getDish().getDishId());
 			
 			result = pStmt.executeUpdate();
 			
-			System.out.println("UPDATE Menu SET QtyAvailable = QtyAvailable - " + dish.getQty() + " WHERE DishId = " + dish.getDish().getDishId());
+			System.out.println("UPDATE Menu SET QtyAvailable = QtyAvailable - " + menuItem.getQty() + " WHERE DishId = " + menuItem.getDish().getDishId());
 		} catch (SQLException e) {
 			System.out.println("Error updating dish quantity in Menu: " + e.getMessage());
 		}
