@@ -10,9 +10,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.nttdata.foodorderingapp.model.Dish;
 import com.nttdata.foodorderingapp.model.DishDetails;
 import com.nttdata.foodorderingapp.model.DishFromDishes;
+import com.nttdata.foodorderingapp.model.MenuDish;
 import com.nttdata.foodorderingapp.model.OrderFromTable;
 import com.nttdata.foodorderingapp.model.OrderToInsert;
 import com.nttdata.foodorderingapp.model.User;
@@ -56,15 +56,15 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public List<Dish> getAllDishesOnMenu() {
-		List<Dish> result = new ArrayList<Dish>();
+	public List<MenuDish> getAllDishesOnMenu() {
+		List<MenuDish> result = new ArrayList<MenuDish>();
 		try (Connection conn = getConnection();
 				Statement stmt = conn.createStatement()) {
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Menu");
 			
 			while(rs.next()) {
-				result.add(new Dish(rs.getInt("DishId"), rs.getString("DishName"), rs.getInt("QtyAvailable"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
+				result.add(new MenuDish(rs.getInt("DishId"), rs.getString("DishName"), rs.getInt("QtyAvailable"), rs.getFloat("PricePer"), rs.getString("ImageUrl"), rs.getString("Ingredients")));
 			}
 			
 			System.out.println("SELECT * FROM Menu");
@@ -94,7 +94,7 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public int addDishToMenu(Dish dish) {
+	public int addDishToMenu(MenuDish dish) {
 		int result = -1;
 		try (Connection conn = getConnection();
 				PreparedStatement pStmt = conn.prepareStatement("INSERT INTO Menu VALUES (?, ?, ?, ?, ?, ?)")) {
@@ -121,7 +121,7 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public int[] addDishToDishes(Dish dish) {
+	public int[] addDishToDishes(MenuDish dish) {
 		int result = -1;
 		int generatedKeys = -1;
 		try (Connection conn = getConnection();
@@ -192,7 +192,7 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 
 	@Override
-	public int[] addDishToOrderDetails(Dish dish, int orderId) {
+	public int[] addDishToOrderDetails(MenuDish dish, int orderId) {
 		int result = -1;
 		int generatedKeys = -1;
 		try (Connection conn = getConnection();
@@ -219,7 +219,7 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 	
 	@Override
-	public int reduceQtyOfDishAvailable(Dish dish) {
+	public int reduceQtyOfDishAvailable(MenuDish dish) {
 		int result = -1;
 		try (Connection conn = getConnection();
 				PreparedStatement pStmt = conn.prepareStatement("UPDATE Menu SET QtyAvailable = QtyAvailable - ? WHERE DishId = ?", Statement.RETURN_GENERATED_KEYS)) {

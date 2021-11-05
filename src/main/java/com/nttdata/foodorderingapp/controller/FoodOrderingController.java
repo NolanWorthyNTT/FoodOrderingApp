@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nttdata.foodorderingapp.dao.FoodDAO;
 import com.nttdata.foodorderingapp.dao.FoodDAOImpl;
-import com.nttdata.foodorderingapp.model.Dish;
 import com.nttdata.foodorderingapp.model.DishDetails;
 import com.nttdata.foodorderingapp.model.DishFromDishes;
+import com.nttdata.foodorderingapp.model.MenuDish;
 import com.nttdata.foodorderingapp.model.OrderAndDishes;
 import com.nttdata.foodorderingapp.model.OrderAndDishesFromTable;
 import com.nttdata.foodorderingapp.model.OrderFromTable;
@@ -33,17 +33,18 @@ public class FoodOrderingController {
 	}
 
 	@GetMapping("/menu")
-	public List<Dish> getAllDishesOnMenu() {
+	public List<MenuDish> getAllDishesOnMenu() {
 		return foodDAO.getAllDishesOnMenu();
 	}
 	
 	@PostMapping("/uploadMenu")
-	public void uploadMenu(@RequestBody List<Dish> dishList) {
+	public void uploadMenu(@RequestBody List<MenuDish> dishList) {
 		
 		int[] addToDishesResult;
 		foodDAO.clearMenu();
 		
-		for(Dish dish : dishList) {
+		for(MenuDish dish : dishList) {
+			// dishId of -1 signifies a new dish - one not in Dishes table
 			if(dish.getDishId() == -1) {
 				addToDishesResult = foodDAO.addDishToDishes(dish);
 				dish.setDishId(addToDishesResult[1]);
@@ -60,7 +61,7 @@ public class FoodOrderingController {
 		int reduceQtyOfDishAvailableResult;
 		
 		addOrderToOrdersResult = foodDAO.addOrderToOrders(oad.getOrderToInsert());
-		for(Dish dish : oad.getDishesInOrder()) {
+		for(MenuDish dish : oad.getDishesInOrder()) {
 			addDishToOrderDetailsResult = foodDAO.addDishToOrderDetails(dish, addOrderToOrdersResult[1]);
 			reduceQtyOfDishAvailableResult = foodDAO.reduceQtyOfDishAvailable(dish);
 		}
