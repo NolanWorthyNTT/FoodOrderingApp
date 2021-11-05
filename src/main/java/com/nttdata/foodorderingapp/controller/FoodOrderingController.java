@@ -45,9 +45,9 @@ public class FoodOrderingController {
 		
 		for(MenuDish dish : dishList) {
 			// dishId of -1 signifies a new dish - one not in Dishes table
-			if(dish.getDishId() == -1) {
-				addToDishesResult = foodDAO.addDishToDishes(dish);
-				dish.setDishId(addToDishesResult[1]);
+			if(dish.getDish().getDishId() == -1) {
+				addToDishesResult = foodDAO.addDishToDishes(dish.getDish());
+				dish.getDish().setDishId(addToDishesResult[1]);
 			}
 			
 			foodDAO.addDishToMenu(dish);
@@ -65,6 +65,8 @@ public class FoodOrderingController {
 			addDishToOrderDetailsResult = foodDAO.addDishToOrderDetails(dish, addOrderToOrdersResult[1]);
 			reduceQtyOfDishAvailableResult = foodDAO.reduceQtyOfDishAvailable(dish);
 		}
+		
+		
 	}
 	
 	@GetMapping("/orders")

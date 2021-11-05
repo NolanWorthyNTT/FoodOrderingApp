@@ -14,7 +14,7 @@ public interface FoodDAO {
 	public List<MenuDish> getAllDishesOnMenu();
 	public List<DishFromDishes> getAllDishes();
 	public int addDishToMenu(MenuDish dish);
-	public int[] addDishToDishes(MenuDish dish);
+	public int[] addDishToDishes(DishFromDishes dish);
 	public int clearMenu();
 	public int[] addOrderToOrders(OrderToInsert order);
 	public int[] addDishToOrderDetails(MenuDish dish, int orderId);

@@ -1,37 +1,29 @@
 package com.nttdata.foodorderingapp.model;
 
 public class MenuDish {
-	private int dishId;
-	private String dishName;
+	DishFromDishes dish;
 	private int qty;
-	private float pricePer;
-	private String imageUrl;
-	private String ingredients;
 	
-	public MenuDish(int dishId, String dishName, int qty, float pricePer, String imageUrl, String ingredients) {
+	public MenuDish(int dishId, String dishName, float pricePer, String imageUrl, String ingredients, int qty) {
 		super();
-		this.dishId = dishId;
-		this.dishName = dishName;
+		dish = new DishFromDishes(dishId, dishName, pricePer, imageUrl, ingredients);
 		this.qty = qty;
-		this.pricePer = pricePer;
-		this.imageUrl = imageUrl;
-		this.ingredients = ingredients;
-	}
-
-	public int getDishId() {
-		return dishId;
 	}
 	
-	public void setDishId(int dishId) {
-		this.dishId = dishId;
+	public MenuDish(DishFromDishes dish, int qty) {
+		super();
+		this.dish = dish;
+		this.qty = qty;
 	}
 	
-	public String getDishName() {
-		return dishName;
+	public MenuDish () {};
+	
+	public DishFromDishes getDish() {
+		return dish;
 	}
 
-	public void setDishName(String dishName) {
-		this.dishName = dishName;
+	public void setDish(DishFromDishes dish) {
+		this.dish = dish;
 	}
 	
 	public int getQty() {
@@ -41,28 +33,9 @@ public class MenuDish {
 	public void setQty(int qty) {
 		this.qty = qty;
 	}
-
-	public float getPricePer() {
-		return pricePer;
-	}
-
-	public void setPricePer(float pricePer) {
-		this.pricePer = pricePer;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
-	public String getIngredients() {
-		return ingredients;
-	}
-
-	public void setIngredients(String ingredients) {
-		this.ingredients = ingredients;
+	
+	@Override
+	public String toString() {
+		return "dishID " + dish.getDishId();
 	}
 }

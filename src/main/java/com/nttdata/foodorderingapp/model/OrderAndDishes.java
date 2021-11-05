@@ -28,5 +28,8 @@ public class OrderAndDishes {
 		this.dishesInOrder = dishesInOrder;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "ORDER: " + order + ", DISHES: " + dishesInOrder;
+	}
 }
